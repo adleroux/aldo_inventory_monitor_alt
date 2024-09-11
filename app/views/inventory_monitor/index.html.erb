@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aldo Inventory Monitor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    #alerts {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 20px;
+      color: #d9534f;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    #latest-json {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #f9f9f9;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    
+    th {
+      background-color: #f4f4f4;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    td {
+      vertical-align: top;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Highlight recently updated cells */
+    .highlighted {
+      background-color: yellow;
+      transition: background-color 2s ease;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aldo Inventory Monitor</h1>
+
+  
+  <div id="alerts" class="alert-messages">
+    <h2>Alerts</h2>
+      <% if @alerts.present? %>
+        <ul>
+          <% @alerts.each do |alert| %>
+            <li>
+              <strong>Store:</strong> <%= alert[:store] %> |
+              <strong>Model:</strong> <%= alert[:model] %> |
+              <strong>Message:</strong> <%= alert[:message] %>
+            </li>
+          <% end %>
+        </ul>
+    <% else %>
+      <p>No alerts at this time.</p>
+    <% end %>
+  </div>
+
+  <table id="inventory-table">
+    <thead>
+      <tr id="header-row">
+        <th></th> <!-- Empty header for row labels -->
+        <% @stores.each do |store| %>
+          <th><%= store.name %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody id="inventory-body">
+      <% @shoe_models.each do |model| %>
+        <tr>
+          <td><%= model.name %></td>
+          <% @stores.each do |store| %>
+            <% inventory = @inventories.find { |inv| inv.store == store && inv.shoe_model == model } %>
+            <td class="<%= 'highlighted' if inventory.present? && inventory.quantity < 6 || inventory.quantity >= 95 %>">
+              <%= inventory.present? ? inventory.quantity : 'N/A' %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div id="latest-json">
+    <!-- Latest JSON data will be displayed here -->
+  </div>
+
+  <%= javascript_importmap_tags %> <!-- Include JavaScript for handling real-time updates -->
+</body>
+</html>
