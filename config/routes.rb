@@ -15,4 +15,8 @@ Rails.application.routes.draw do
 
   # WebSocket server
   mount ActionCable.server => "/cable"
+
+  namespace :api do
+    resources :inventories, only: [ :create ], defaults: { format: :json }
+  end
 end
