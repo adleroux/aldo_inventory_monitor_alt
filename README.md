@@ -4,6 +4,9 @@ Aldo Inventory Monitor
 Overview
 --------
 
+<img width="1882" alt="image" src="https://github.com/user-attachments/assets/85e2dacd-0ec1-49c9-b113-1c6ad26346d9">
+
+
 This project provides a comprehensive inventory monitoring solution for Aldo Stores, featuring real-time updates, an alert system, a REST API, and a full frontend interface. The key components of this solution include:
 
 -   **WebSocket Integration**: Captures real-time updates from ALDO stores.
